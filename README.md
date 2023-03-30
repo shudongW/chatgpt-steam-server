@@ -14,11 +14,11 @@ WebSocket参考：[SocketIOListener](https://github.com/shudongW/chatgpt-steam-s
 **最新版SDK参考：https://github.com/Grt1228/chatgpt-java**
 
 公众号：
-<img width="1080" alt="1" src="https://raw.githubusercontent.com/shudongW/myself_img/main/gzh.jpg">
+<img width="210" height="300" alt="二维码" src="https://raw.githubusercontent.com/shudongW/myself_img/main/gzh.jpg">
 微信：
-<img width="1080" alt="1" src="https://raw.githubusercontent.com/shudongW/myself_img/main/me.png">
+<img width="210" height="300" alt="二维码" src="https://raw.githubusercontent.com/shudongW/myself_img/main/me.png">
 知识星球：
-<img width="1080" alt="1" src="https://raw.githubusercontent.com/shudongW/myself_img/main/xt.jpg">
+<img width="210" height="300" alt="二维码" src="https://raw.githubusercontent.com/shudongW/myself_img/main/xt.jpg">
 
 # SSE
 主要是基于[SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#event_stream_format) 实现的（可以百度下这个技术）。也是最近在了解到SSE。OpenAI官网在接受Completions接口的时候，有提到过这个技术。
