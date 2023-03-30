@@ -66,11 +66,9 @@ ChatgptSteamServerApplication
 
 ```
 http://localhost:8000/
-http://localhost:8000/v2
 ```
 能打开此页面表示运行成功
 <img width="1080" alt="1" src="https://raw.githubusercontent.com/shudongW/myself_img/main/gpt_client-1.gif">
-<img width="1080" alt="1" src="https://user-images.githubusercontent.com/27008803/224496424-b75465a0-32fb-491a-934c-c9c524cf5be7.png">
 
 
 代码其实很简单，小伙伴们可以下载代码来看下。
