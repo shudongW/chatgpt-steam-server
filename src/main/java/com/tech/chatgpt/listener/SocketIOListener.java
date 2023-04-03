@@ -1,11 +1,11 @@
-package com.chatgpt.steam.server.listener;
+package com.tech.chatgpt.listener;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.unfbx.chatgpt.entity.chat.ChatCompletionResponse;
-import com.unfbx.chatgpt.entity.chat.Message;
+import com.tech.chatgpt.entity.chat.ChatCompletionResponse;
+import com.tech.chatgpt.entity.chat.Message;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;

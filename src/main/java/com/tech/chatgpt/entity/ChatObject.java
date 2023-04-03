@@ -1,4 +1,4 @@
-package com.chatgpt.steam.server.entity;
+package com.tech.chatgpt.entity;
 
 public class ChatObject {
 

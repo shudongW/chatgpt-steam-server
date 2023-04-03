@@ -1,4 +1,4 @@
-package com.chatgpt.steam.server.config;
+package com.tech.chatgpt.config;
 
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;

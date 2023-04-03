@@ -1,6 +1,6 @@
-package com.chatgpt.steam.server.entity;
+package com.tech.chatgpt.entity;
 
-import com.unfbx.chatgpt.entity.chat.Message;
+import com.tech.chatgpt.entity.chat.Message;
 import lombok.Data;
 
 import java.util.List;

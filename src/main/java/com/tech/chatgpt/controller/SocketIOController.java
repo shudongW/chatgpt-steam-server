@@ -1,8 +1,8 @@
-package com.chatgpt.steam.server.controller;
+package com.tech.chatgpt.controller;
 
-import com.unfbx.chatgpt.OpenAiStreamClient;
-import com.chatgpt.steam.server.entity.ChatObject;
-import com.chatgpt.steam.server.service.SocketIOService;
+import com.tech.chatgpt.OpenAiStreamClient;
+import com.tech.chatgpt.entity.ChatObject;
+import com.tech.chatgpt.service.SocketIOService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

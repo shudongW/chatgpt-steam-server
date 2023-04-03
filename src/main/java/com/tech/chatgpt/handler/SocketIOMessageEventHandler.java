@@ -1,4 +1,4 @@
-package com.chatgpt.steam.server.handler;
+package com.tech.chatgpt.handler;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;

@@ -1,13 +1,13 @@
-package com.chatgpt.steam.server.controller;
+package com.tech.chatgpt.controller;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.chatgpt.steam.server.config.LocalCache;
-import com.chatgpt.steam.server.listener.OpenAIEventSourceListener;
-import com.unfbx.chatgpt.OpenAiStreamClient;
-import com.unfbx.chatgpt.entity.chat.Message;
-import com.unfbx.chatgpt.exception.BaseException;
-import com.unfbx.chatgpt.exception.CommonError;
+import com.tech.chatgpt.config.LocalCache;
+import com.tech.chatgpt.listener.OpenAIEventSourceListener;
+import com.tech.chatgpt.OpenAiStreamClient;
+import com.tech.chatgpt.entity.chat.Message;
+import com.tech.chatgpt.exception.BaseException;
+import com.tech.chatgpt.exception.CommonError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;

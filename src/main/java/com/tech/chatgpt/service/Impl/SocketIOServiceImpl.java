@@ -1,18 +1,18 @@
-package com.chatgpt.steam.server.service.Impl;
+package com.tech.chatgpt.service.Impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.chatgpt.steam.server.entity.ChatObject;
+import com.tech.chatgpt.entity.ChatObject;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnEvent;
-import com.unfbx.chatgpt.OpenAiStreamClient;
-import com.unfbx.chatgpt.entity.chat.Message;
-import com.chatgpt.steam.server.config.LocalCache;
-import com.chatgpt.steam.server.handler.SocketIOMessageEventHandler;
-import com.chatgpt.steam.server.listener.SocketIOListener;
-import com.chatgpt.steam.server.service.SocketIOService;
+import com.tech.chatgpt.OpenAiStreamClient;
+import com.tech.chatgpt.config.LocalCache;
+import com.tech.chatgpt.entity.chat.Message;
+import com.tech.chatgpt.handler.SocketIOMessageEventHandler;
+import com.tech.chatgpt.listener.SocketIOListener;
+import com.tech.chatgpt.service.SocketIOService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

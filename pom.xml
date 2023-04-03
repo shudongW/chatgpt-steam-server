@@ -8,7 +8,7 @@
         <version>2.7.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.unfbx</groupId>
+    <groupId>com.tech</groupId>
     <artifactId>chatgpt-steam-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>chatgpt-steam-server</name>
@@ -35,9 +35,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.unfbx</groupId>
-            <artifactId>chatgpt-java</artifactId>
-            <version>1.0.6</version>
+            <groupId>com.tect</groupId>
+            <artifactId>chatgpt-java-main</artifactId>
+            <version>1.0.8</version>
         </dependency>
         <dependency>
             <groupId>com.corundumstudio.socketio</groupId>

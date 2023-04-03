@@ -1,7 +1,7 @@
-package com.chatgpt.steam.server.listener;
+package com.tech.chatgpt.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.unfbx.chatgpt.entity.chat.ChatCompletionResponse;
+import com.tech.chatgpt.entity.chat.ChatCompletionResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;

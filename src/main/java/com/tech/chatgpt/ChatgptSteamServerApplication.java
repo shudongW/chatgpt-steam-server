@@ -1,10 +1,11 @@
-package com.chatgpt.steam.server;
+package com.tech.chatgpt;
 
-import com.unfbx.chatgpt.OpenAiStreamClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import java.util.Collections;
 
 /**
  * 描述：ChatgptSteamServerApplication
@@ -24,7 +25,7 @@ public class ChatgptSteamServerApplication {
 
     @Bean
     public OpenAiStreamClient openAiStreamClient() {
-        return OpenAiStreamClient.builder().apiHost(apiHost).apiKey(apiKey).build();
+        return OpenAiStreamClient.builder().apiHost(apiHost).apiKey(Collections.singletonList(apiKey)).build();
     }
 
 }

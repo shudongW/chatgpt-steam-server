@@ -1,6 +1,6 @@
-package com.chatgpt.steam.server.service;
+package com.tech.chatgpt.service;
 
-import com.chatgpt.steam.server.entity.ChatObject;
+import com.tech.chatgpt.entity.ChatObject;
 import com.corundumstudio.socketio.SocketIOClient;
 import org.springframework.beans.factory.InitializingBean;
 

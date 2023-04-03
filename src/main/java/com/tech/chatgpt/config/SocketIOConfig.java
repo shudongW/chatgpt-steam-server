@@ -1,4 +1,4 @@
-package com.chatgpt.steam.server.config;
+package com.tech.chatgpt.config;
 
 import com.corundumstudio.socketio.SocketConfig;
 import com.corundumstudio.socketio.SocketIOServer;
