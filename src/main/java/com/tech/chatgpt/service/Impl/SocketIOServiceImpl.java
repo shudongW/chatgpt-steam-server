@@ -2,6 +2,7 @@ package com.tech.chatgpt.service.Impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.tech.chatgpt.AzureOpenAISteamClient;
 import com.tech.chatgpt.entity.ChatObject;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
@@ -9,15 +10,19 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnEvent;
 import com.tech.chatgpt.OpenAiStreamClient;
 import com.tech.chatgpt.config.LocalCache;
+import com.tech.chatgpt.entity.chat.ChatCompletionResponse;
 import com.tech.chatgpt.entity.chat.Message;
 import com.tech.chatgpt.handler.SocketIOMessageEventHandler;
+import com.tech.chatgpt.listener.CompletionEventSourceListener;
 import com.tech.chatgpt.listener.SocketIOListener;
 import com.tech.chatgpt.service.SocketIOService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -32,7 +37,13 @@ public class SocketIOServiceImpl implements SocketIOService {
     private SocketIOMessageEventHandler socketIOHandler;
     @Resource
     private OpenAiStreamClient openAiStreamClient;
+    @Resource
+    private AzureOpenAISteamClient azureOpenAISteamClient;
 
+    @Value("${gpt.channel}")
+    private String channel;
+    @Value("${azure.apiPath.AI35}")
+    private String ai35;
 
 
     //收到事件
@@ -73,7 +84,13 @@ public class SocketIOServiceImpl implements SocketIOService {
             messages.add(currentMessage);
         }
         SocketIOListener socketIOListener = new SocketIOListener(client);
-        openAiStreamClient.streamChatCompletion(messages, socketIOListener);
+
+        if(channel.equalsIgnoreCase("azure")){
+            log.info(LocalDateTime.now() + ", channel： azure");
+            azureOpenAISteamClient.streamChatCompletion(messages, socketIOListener, ai35);
+        }else {
+            openAiStreamClient.streamChatCompletion(messages, socketIOListener);
+        }
         LocalCache.CACHE.put(userName, JSONUtil.toJsonStr(messages), LocalCache.TIMEOUT);
         log.info("event end");
     }

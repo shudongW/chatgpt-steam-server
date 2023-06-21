@@ -37,7 +37,7 @@
         <dependency>
             <groupId>com.tect</groupId>
             <artifactId>chatgpt-java-main</artifactId>
-            <version>1.0.8</version>
+            <version>1.0.14</version>
         </dependency>
         <dependency>
             <groupId>com.corundumstudio.socketio</groupId>

@@ -34,7 +34,7 @@ Completion对象本身有一个stream属性，当stream为true时候Api的Respon
 <dependency>
     <groupId>com.unfbx</groupId>
     <artifactId>chatgpt-java</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.14</version>
 </dependency>
 ```
 # 项目部署
