@@ -79,9 +79,12 @@ public class CompletionEventSourceListener extends EventSourceListener {
         }
         ResponseBody body = response.body();
         if (Objects.nonNull(body)) {
-            log.error("OpenAI  sse连接异常data：{}，异常：{}", body.string(), t);
+            String bodyString = body.string();
+            log.error("OpenAI  sse连接异常data：{}，异常：{}", bodyString, t);
+            sseEmitter.send(SseEmitter.event().data("Error: " + bodyString).name("error"));
         } else {
             log.error("OpenAI  sse连接异常data：{}，异常：{}", response, t);
+            sseEmitter.send(SseEmitter.event().data("Error: " + t.getMessage()).name("error"));
         }
         eventSource.cancel();
     }

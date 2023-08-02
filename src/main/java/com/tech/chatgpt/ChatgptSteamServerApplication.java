@@ -17,6 +17,8 @@ public class ChatgptSteamServerApplication {
     private String apiKey;
     @Value("${chatgpt.apiHost}")
     private String apiHost;
+    @Value("${chatgpt.apiHostProxy}")
+    private String apiHostProxy;
     @Value("${azure.apiKey}")
     private String azureKey;
     @Value("${azure.apiHost}")

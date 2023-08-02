@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class SocketIOConfig {
 
 //    @Value("${socketio.host}")
-    private String host = "XXX.XXX.XXX.XXX";
+    private String host = "172.17.18.220";
 
 //    @Value("${socketio.port}")
     private Integer port = 9092;

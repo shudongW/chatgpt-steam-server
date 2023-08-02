@@ -29,12 +29,12 @@ Completion对象本身有一个stream属性，当stream为true时候Api的Respon
 
 ## 依赖
 最新版参考：https://github.com/shudongW/chatgpt-java-main
-目前是1.0.8版本
+目前是1.0.16版本
 ```
 <dependency>
     <groupId>com.unfbx</groupId>
     <artifactId>chatgpt-java</artifactId>
-    <version>1.0.14</version>
+    <version>1.0.16</version>
 </dependency>
 ```
 # 项目部署
@@ -43,24 +43,30 @@ Completion对象本身有一个stream属性，当stream为true时候Api的Respon
 ```
 git clone https://github.com/shudongW/chatgpt-steam-server
 ```
-## 修改配置
-com/tect/chatgpt/config/SocketIOConfig.java
+## Socket修改配置
+com/tech/chatgpt/config/SocketIOConfig.java
 ```
 host='你的服务器地址' // localhost
 port='socket port'
 ```
 修改application.properties文件
 默认5300端口，可以自己修改
+国内使用apiHostProxy代理地址可直接访问Openai
+过滤采用的是百度的敏感词过滤
 ```
 spring.web.resources.static-locations= classpath:/static/dist/
 server.port=5300
 gpt.channel=azure
 chatgpt.apiKey=sk-9JzK5K3ubQUo3kVSDFWER4R4WRFEWR345WREWR32
-chatgpt.apiHost=https://api.openai.com
+chatgpt.apiHost=https://api.openai.com/
+chatgpt.apiHostProxy=https://api.openai-proxy.com/
 azure.apiKey=14c7DFSEFRWER234324324324EWRFWER
 azure.apiHost=https://azure-oxxxt.openai.azure.com/
-azure.apiPath.AI35=openai/deployments/{model_name}/chat/completions?api-version=2023-03-15-preview
+azure.apiPath.AI35=openai/deployments/{model_name}/chat/completions?api-version=2023-07-01-preview
 azure.apiPath.Davinci003=openai/deployments/{model_name}/completions?api-version=2022-12-01
+filter.baidu.appId=10000000
+filter.baidu.apiKey=123456
+filter.baidu.secretKey=safasfasfasfsafasf
 ```
 ## 运行
 运行ChatgptSteamServerApplication

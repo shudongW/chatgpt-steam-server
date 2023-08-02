@@ -1,7 +1,7 @@
 package com.tech.chatgpt.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tech.chatgpt.entity.chat.ChatCompletionResponse;
+import com.tech.chatgpt.entity.completions.CompletionResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
@@ -13,17 +13,14 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.util.Objects;
 
 /**
- * 描述：OpenAI GPT_TURBO_3_5 / GPT4
- *
- * @author wsd
- * @date 2023-02-22
+ * 描述：OpenAI Davinci003
  */
 @Slf4j
-public class OpenAIEventSourceListener extends EventSourceListener {
+public class OpenAIDavinci003EventSourceListener extends EventSourceListener {
 
     private SseEmitter sseEmitter;
 
-    public OpenAIEventSourceListener(SseEmitter sseEmitter) {
+    public OpenAIDavinci003EventSourceListener(SseEmitter sseEmitter) {
         this.sseEmitter = sseEmitter;
     }
 
@@ -50,11 +47,12 @@ public class OpenAIEventSourceListener extends EventSourceListener {
                     .reconnectTime(3000));
             return;
         }
+
         ObjectMapper mapper = new ObjectMapper();
-        ChatCompletionResponse completionResponse = mapper.readValue(data, ChatCompletionResponse.class); // 读取Json
+        CompletionResponse completionResponse = mapper.readValue(data, CompletionResponse.class); // 读取Json
         sseEmitter.send(SseEmitter.event()
                 .id(completionResponse.getId())
-                .data(completionResponse.getChoices().get(0).getDelta())
+                .data(completionResponse.getChoices()[0])
                 .reconnectTime(3000));
     }
 
@@ -75,10 +73,10 @@ public class OpenAIEventSourceListener extends EventSourceListener {
         if (Objects.nonNull(body)) {
             String bodyString = body.string();
             log.error("OpenAI  sse连接异常data：{}，异常：{}", bodyString, t);
-            sseEmitter.send(SseEmitter.event().id("chatcmpl-"+System.currentTimeMillis()).data("Error: " + bodyString).name("Error"));
+            sseEmitter.send(SseEmitter.event().id("cmpl-"+System.currentTimeMillis()).data("Error: " + bodyString).name("Error"));
         } else {
             log.error("OpenAI  sse连接异常data：{}，异常：{}", response, t);
-            sseEmitter.send(SseEmitter.event().id("chatcmpl-"+System.currentTimeMillis()).data("Error: " + t.getMessage()).name("Error"));
+            sseEmitter.send(SseEmitter.event().id("cmpl-"+System.currentTimeMillis()).data("Error: " + t.getMessage()).name("Error"));
         }
         eventSource.cancel();
     }

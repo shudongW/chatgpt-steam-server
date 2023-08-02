@@ -1,19 +1,17 @@
 package com.tech.chatgpt.controller;
 
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.tech.chatgpt.AzureOpenAISteamClient;
 import com.tech.chatgpt.config.LocalCache;
 import com.tech.chatgpt.entity.ChatObject;
-import com.tech.chatgpt.entity.completions.Completion;
 import com.tech.chatgpt.listener.CompletionEventSourceListener;
-import com.tech.chatgpt.listener.Davinci003EventSourceListener;
 import com.tech.chatgpt.listener.OpenAIEventSourceListener;
 import com.tech.chatgpt.OpenAiStreamClient;
 import com.tech.chatgpt.entity.chat.Message;
 import com.tech.chatgpt.exception.BaseException;
 import com.tech.chatgpt.exception.CommonError;
+import com.tech.chatgpt.utils.BaiDuAiCheck;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -58,6 +56,12 @@ public class ChatController {
         if (StrUtil.isBlank(uid)) {
             throw new BaseException(CommonError.SYS_ERROR);
         }
+        if(BaiDuAiCheck.checkText(msg)){
+            Message message = Message.builder().role(Message.Role.ASSISTANT).content("很抱歉！我无法回答你的问题。换个主题吧").build();
+            sseEmitter.send(SseEmitter.event().id("chatcmpl-"+System.currentTimeMillis()).name("Filter").data(message).reconnectTime(3000));
+            sseEmitter.send(SseEmitter.event().id("[DONE]").data("[DONE]").reconnectTime(3000));
+            return sseEmitter;
+        }
         log.info("msg: ["+msg+"], uuid:[" +uid+"]");
 
         String messageContext = (String) LocalCache.CACHE.get(uid);
@@ -73,28 +77,32 @@ public class ChatController {
             Message currentMessage = Message.builder().content(msg).role(Message.Role.USER).build();
             messages.add(currentMessage);
         }
-        sseEmitter.send(SseEmitter.event().id(uid).name("连接成功！！！！").data(LocalDateTime.now()).reconnectTime(3000));
-        sseEmitter.onCompletion(() -> {
-            log.info(LocalDateTime.now() + ", uid#" + uid + ", on completion");
-        });
-        sseEmitter.onTimeout(() -> log.info(LocalDateTime.now() + ", uid#" + uid + ", on timeout#" + sseEmitter.getTimeout()));
-        sseEmitter.onError(
-                throwable -> {
-                    try {
-                        log.info(LocalDateTime.now() + ", uid#" + "765431" + ", on error#" + throwable.toString());
-                        sseEmitter.send(SseEmitter.event().id("765431").name("发生异常！").data(throwable.getMessage()).reconnectTime(3000));
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        try {
+            sseEmitter.send(SseEmitter.event().id(uid).name("连接成功！！！！").data(LocalDateTime.now()).reconnectTime(3000));
+            sseEmitter.onCompletion(() -> {
+                log.info(LocalDateTime.now() + ", uid#" + uid + ", on completion");
+            });
+            sseEmitter.onTimeout(() -> log.info(LocalDateTime.now() + ", uid#" + uid + ", on timeout#" + sseEmitter.getTimeout()));
+            sseEmitter.onError(
+                    throwable -> {
+                        try {
+                            log.info(LocalDateTime.now() + ", uid#" + "765431" + ", on error#" + throwable.toString());
+                            sseEmitter.send(SseEmitter.event().id("765431").name("发生异常！").data(throwable.getMessage()).reconnectTime(3000));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-        );
-        if(channel.equalsIgnoreCase("azure")){
-            log.info(LocalDateTime.now() + ", channel： azure");
-            CompletionEventSourceListener openAIEventSourceListener = new CompletionEventSourceListener(sseEmitter);
-            azureOpenAISteamClient.streamChatCompletion(messages, openAIEventSourceListener, ai35);
-        }else {
-            OpenAIEventSourceListener openAIEventSourceListener = new OpenAIEventSourceListener(sseEmitter);
-            openAiStreamClient.streamChatCompletion(messages, openAIEventSourceListener);
+            );
+            if(channel.equalsIgnoreCase("azure")){
+                log.info(LocalDateTime.now() + ", channel： azure");
+                CompletionEventSourceListener openAIEventSourceListener = new CompletionEventSourceListener(sseEmitter);
+                azureOpenAISteamClient.streamChatCompletion(messages, openAIEventSourceListener, ai35);
+            }else {
+                OpenAIEventSourceListener openAIEventSourceListener = new OpenAIEventSourceListener(sseEmitter);
+                openAiStreamClient.streamChatCompletion(messages, openAIEventSourceListener);
+            }
+        } catch (Exception e) {
+            throw new BaseException(CommonError.OPENAI_SERVER_ERROR);
         }
         LocalCache.CACHE.put(uid, JSONUtil.toJsonStr(messages), LocalCache.TIMEOUT);
         return sseEmitter;
@@ -108,6 +116,12 @@ public class ChatController {
         String uid = headers.get("uid");
         if (StrUtil.isBlank(uid)) {
             throw new BaseException(CommonError.SYS_ERROR);
+        }
+        if(BaiDuAiCheck.checkText(chat.getMessage())){
+            Message message = Message.builder().role(Message.Role.ASSISTANT).content("很抱歉！我无法回答你的问题。换个主题吧").build();
+            sseEmitter.send(SseEmitter.event().id("chatcmpl-"+System.currentTimeMillis()).name("Filter").data(message).reconnectTime(3000));
+            sseEmitter.send(SseEmitter.event().id("[DONE]").data("[DONE]").reconnectTime(3000));
+            return sseEmitter;
         }
         log.info("msg: ["+chat.getMessage()+"], uuid:[" +uid+"]");
 
@@ -124,28 +138,32 @@ public class ChatController {
             Message currentMessage = Message.builder().content(chat.getMessage()).role(Message.Role.USER).build();
             messages.add(currentMessage);
         }
-        sseEmitter.send(SseEmitter.event().id(uid).name("连接成功！！！！").data(LocalDateTime.now()).reconnectTime(3000));
-        sseEmitter.onCompletion(() -> {
-            log.info(LocalDateTime.now() + ", uid#" + uid + ", on completion");
-        });
-        sseEmitter.onTimeout(() -> log.info(LocalDateTime.now() + ", uid#" + uid + ", on timeout#" + sseEmitter.getTimeout()));
-        sseEmitter.onError(
-                throwable -> {
-                    try {
-                        log.info(LocalDateTime.now() + ", uid#" + "765431" + ", on error#" + throwable.toString());
-                        sseEmitter.send(SseEmitter.event().id("765431").name("发生异常！").data(throwable.getMessage()).reconnectTime(3000));
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        try {
+            sseEmitter.send(SseEmitter.event().id(uid).name("连接成功！！！！").data(LocalDateTime.now()).reconnectTime(3000));
+            sseEmitter.onCompletion(() -> {
+                log.info(LocalDateTime.now() + ", uid#" + uid + ", on completion");
+            });
+            sseEmitter.onTimeout(() -> log.info(LocalDateTime.now() + ", uid#" + uid + ", on timeout#" + sseEmitter.getTimeout()));
+            sseEmitter.onError(
+                    throwable -> {
+                        try {
+                            log.info(LocalDateTime.now() + ", uid#" + "765431" + ", on error#" + throwable.toString());
+                            sseEmitter.send(SseEmitter.event().id("765431").name("发生异常！").data(throwable.getMessage()).reconnectTime(3000));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-        );
-        if(channel.equalsIgnoreCase("azure")){
-            log.info(LocalDateTime.now() + ", channel： azure");
-            CompletionEventSourceListener openAIEventSourceListener = new CompletionEventSourceListener(sseEmitter);
-            azureOpenAISteamClient.streamChatCompletion(messages, openAIEventSourceListener, ai35);
-        }else {
-            OpenAIEventSourceListener openAIEventSourceListener = new OpenAIEventSourceListener(sseEmitter);
-            openAiStreamClient.streamChatCompletion(messages, openAIEventSourceListener);
+            );
+            if(channel.equalsIgnoreCase("azure")){
+                log.info(LocalDateTime.now() + ", channel： azure");
+                CompletionEventSourceListener openAIEventSourceListener = new CompletionEventSourceListener(sseEmitter);
+                azureOpenAISteamClient.streamChatCompletion(messages, openAIEventSourceListener, ai35);
+            }else {
+                OpenAIEventSourceListener openAIEventSourceListener = new OpenAIEventSourceListener(sseEmitter);
+                openAiStreamClient.streamChatCompletion(messages, openAIEventSourceListener);
+            }
+        } catch (Exception e) {
+            throw new BaseException(CommonError.OPENAI_SERVER_ERROR);
         }
         LocalCache.CACHE.put(uid, JSONUtil.toJsonStr(messages), LocalCache.TIMEOUT);
         return sseEmitter;
